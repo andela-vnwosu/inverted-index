@@ -1,10 +1,16 @@
+// This program attempts to build an inverted index from a JSON file
+
 class InvertedIndex{
 
     constructor(){
-        this.indices = [];
+      
+      // to save multiple inverted indexes
+        
+      this.indices = [];
     }
-
-    createIndex(jsonObject) {
+//creates an inverted index from the specified fileName or JsonObject
+    
+  createIndex(fileName, jsonObject) {
         const index = {};
         jsonObject.map(function(sentence, count){
             (sentence.title+' '+sentence.text)
@@ -18,11 +24,12 @@ class InvertedIndex{
                     }
 
                 })
-        });
-        this.indices.push(index);
-        return index;
+            });
+            this.indices.push(index);
+            return index;
     }
-
+    //Searches the recently indexed object for matches with specified parameters
+  
     searchIndex (term, choice){
         const result = [];
         const terms =
@@ -35,8 +42,6 @@ class InvertedIndex{
                 terms.map(function(word) {
 
                     for(let saved_word in index){
-                        //console.log(saved_word == word);
-                        //var current_index = this.indices[i];
                         if(saved_word == word){
                             result[pos][word] = index[saved_word];
                         }
@@ -68,16 +73,26 @@ class InvertedIndex{
             return this.index[pos];
     }
 
+    isValidJson(json){
+        try {
+           return JSON.parse(json);
+        } catch(e){
+            return false;
+        }
+    }
+
     deleteIndex(){
 
     }
 }
 
 
+
 let myIndex = new InvertedIndex();
     myIndex.createIndex([{title:'hello', text:'world'}, {title:'Number value', text:'Nothing you will do'}]);
     myIndex.createIndex([{title:'hello', text:'world'}, {title:'Number value', text:'Nothing you will do'}]);
 
-let search_result = myIndex.searchIndex('hello world', 'all');
+let search_result = myIndex.searchIndex('number HELLO', 'all');
 
 console.log(search_result);
+ 
