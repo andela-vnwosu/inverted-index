@@ -15,6 +15,7 @@ app.controller('InvertedIndexController', ['$scope', '$timeout', function($scope
     $scope.file = {};
     $scope.indicesArray = [];
     $scope.searchResult = [];
+    $scope.createdIndex = [];
 
     $scope.uploadFile =  function(files){
         for(let i = 0; i < files.length; i++){
@@ -23,11 +24,16 @@ app.controller('InvertedIndexController', ['$scope', '$timeout', function($scope
                 function(reader, $scope, fileName){
                     reader.addEventListener('load', function(){
                         $timeout(function(){
-                            let file = angular.fromJson(reader.result);
-                            $scope.filesArray.push(file);
-                            $scope.fileNamesArray.push(fileName);
-                            
-                            
+
+                            try{
+                                let file = angular.fromJson(reader.result);
+                                $scope.filesArray.push(file);
+                                $scope.fileNamesArray.push(fileName);
+                            }catch (e){
+                                alert("not a valid json")
+
+                            }
+
                         });
                     });
                 }
@@ -38,16 +44,29 @@ app.controller('InvertedIndexController', ['$scope', '$timeout', function($scope
     };
 
     $scope.getLengthAsArray = function(index){
-        console.log(index);
+        if(index < 0 || typeof $scope.filesArray[index] == 'undefined')
+            return;
         const arr = [];
-        for(let i = 0; i < $scope.filesArray[index].length; i++){
+        
+        // iterates over index of filesArray and populates filesArray
+        
+      for(let i = 0; i < $scope.filesArray[index].length; i++){
             arr.push(i);
         }
         return arr;
     };
-
     $scope.createIndex= function(index){
-        $scope.indicesArray.push(invertedIndex.createIndex($scope.filesArray[index]));
+        let createdIndex= invertedIndex.createIndex("book.json",$scope.filesArray[index]);
+        
+        // Check if the position of the index has not been saved
+        
+      if($scope.createdIndex.indexOf(index) == -1){
+            $scope.indicesArray.push(createdIndex);
+            
+            //if it has been created, save index position
+            
+        $scope.createdIndex.push(index);
+        }
     };
     
     $scope.searchIndex = function (terms) {
