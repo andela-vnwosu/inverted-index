@@ -1,0 +1,5 @@
+{
+  "strict"        : true,     // true: Requires all functions run in ES5 Strict Mode
+  "varstmt"       : false,    // true: Disallow any var statements. Only `let` and `const` are allowed.
+  "esversion"     : 6,         // {int} Specify the ECMAScript version to which the code must adhere.
+}
