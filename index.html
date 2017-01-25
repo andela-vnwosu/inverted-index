@@ -72,9 +72,9 @@
                             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Search Files
                                 <span class="caret"></span></button>
                             <ul class="dropdown-menu">
-                                <li><a>All</a></li>
-                                <li ng-repeat="d in fileNamesArray ">
-                                    <a>{{d}}</a>
+                                <li><a ng-click="searchSpecificFile(terms, 'all')">All</a></li>
+                                <li ng-repeat="d in fileNamesArray track by $index ">
+                                    <a ng-click="searchSpecificFile(terms, $index)">{{d}}</a>
                                 </li>
 
                             </ul>
@@ -85,7 +85,6 @@
                     <div class="row">
                         <div class="col-md-6" ng-repeat="wordindex in searchResult track by $index">
                             <table style="border: 1px solid black; margin-top: 25px;">
-                                <h4>books.json</h4>
                                 <th>Term</th>
                                 <td ng-repeat="counter in getLengthAsArray($index) track by $index">Doc {{$index}}</td>
                                 <tr ng-repeat="(word,locations) in wordindex">

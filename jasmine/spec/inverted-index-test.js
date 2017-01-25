@@ -1,93 +1,75 @@
 /**
  * Created by chiamakanwosu on 06/01/2017.
  */
-
-describe('invertedIndex', ()=> {
-  let index = new InvertedIndex;
-  let bookPath = 'jasmine/books.json';
-  let docPath = 'jasmine/document.json';
-  index.createIndex(index).then(data => {
-    
+(() => {
+  "use strict";
+  describe('invertedIndex', ()=> {
+    let bookPath = [{
+        "title": "Alice in Wonderland",
+        "text": "Alice falls into a rabbit hole and enters a world full of imagination."
+    },
+      {
+        "title": "The Lord of the Rings: The Fellowship of the Ring.",
+        "text": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring."
+      }
+    ];
+    let documentJson = [
+      {
+        "title": "The cyprus love affair",
+        "text": "A book by Dennis Robins. I lay my love beneath your feet, thread softly, because you thread upon my dreams"
+      },
+      {
+        "title": "the runaway jury",
+        "text": "This is a fictional book by John Grisham, an award winning novelist"
+      },
+      {
+        "title" : "the pelican brief",
+        "text" : "this is also a book by John Grisham, talking about the law and law practice. He hardly writes about love and dreams and emotions."
+      }
+    ];
+    let index = new InvertedIndex();
+    let emptyJson = [];
+    describe('Read book data', ()=> {
+      it('should read the JSON file and assert that it is not empty', () => {
+        expect(index.isValidJson(emptyJson)).toBe(false);
+      });
+    });
+    describe('Populate Index', () => {
+      index.createIndex('book.json', bookPath);
+      it('should verify that the index is created', () => {
+        expect(index.indices.length).toBeGreaterThan(0);
+      });
+      it('should verify the index maps the string keys to the correct' +
+        ' objects in the JSON array', ()=> {
+        index.searchIndex('Alice, elf');
+        expect(index.temp_search).toEqual([0, 1]);
+      });
+      it('Should verify that multiple index could be built', () => {
+        index.createIndex('document.json', documentJson);
+        expect(index.indices.length).toEqual(2);
+      });
+    });
+    describe('Search index', () => {
+      it('should ensure search does not take too long to execute', ()=> {
+        let runtimeThreshold = 1000;
+        let currentMillisecond =  new Date().getMilliseconds();
+        index.searchIndex('Alice', ['Fellowship', ['dwarf'], 'in']);
+        let finalMilliseconds =  new Date().getMilliseconds();
+        let timeDifference = finalMilliseconds - currentMillisecond;
+        expect(timeDifference).toBeLessThan(runtimeThreshold);
+      });
+      it('should ensure searchIndex can handle a varied number of search terms as ' +
+        'arguments', () => {
+        expect(index.searchIndex('Alice', 'Amaka', 'Lord')).toEqual(['0', '', '1']);
+      });
+      it('should ensure searchIndex can handle an array of search terms', () => {
+        expect(index.searchIndex('Alice', ['Fellowship', ['dwarf']])).toEqual(
+          ['0', '1', '1']);
+      });
+      it('should be able to search a specific index', () => {
+        index.searchIndex('pelican', 1);
+        expect(index.temp_search).toEqual([2]);
+      });
+    });
   });
-
-describe('Read book data', ()=> {
-
-    it('should read the JSON file and assert that it is not empty', done => {
-    index.readJsonFile(bookPath).then(data => {
-    expect(index.isEmpty(data)).toBe(false);
-    done();
-    });
-    });
-
-/*Ensure each object in JSON array contains a property whose
- value is a string.*/
-
-it('should ensure each object in JSON array contains a property whose' +
-    ' value is a string',  done => {
-    index.readJsonFile(bookPath).then(data => {
-    for (let obj of data) {
-    expect(typeof obj.title).toEqual('string');
-    expect(typeof obj.text).toEqual('string');
-    }
-    done();
-    });
-});
-
-});
-
-describe('Populate Index', ()=> {
-
-    it('should verify that the index is created', ()=> {
-    expect(Object.keys(index.invertedIndexes).length).toBeGreaterThan(0);
-});
-
-it('should verifies the index maps the string keys to the correct' +
-    ' objects in the JSON array', ()=> {
-    expect(index.searchIndex('Alice', 'elf')).toEqual(['0', '1']);
-});
-
-it('Should verify data multiple index could be built', done=> {
-    index.createIndex(docPath).then(()=> {
-    expect(Object.keys(index.invertedIndexes).length).toEqual(2);
-done();
-});
-});
-
-it("Should be able to delete an invertedIndex object by it 's file path", () => {
-    index.removeIndex(docPath);
-expect(Object.keys(index.invertedIndexes).length).toEqual(1);
-});
-});
-
-describe('Search index', () => {
-    it('should ensure search does not take too long to execute', ()=> {
-    let runtimeThreshold = 1000;
-    let currentMillisecond =  new Date().getMilliseconds();
-
-    index.searchIndex('Alice', ['Fellowship', ['dwarf'], 'in']);
-
-    let finalMilliseconds =  new Date().getMilliseconds();
-    let timeDifference = finalMilliseconds - currentMillisecond;
-
-    expect(timeDifference).toBeLessThan(runtimeThreshold);
-
-});
-
-it('should ensure searchIndex can handle a varied number of search terms as ' +
-    'arguments', () => {
-    expect(index.searchIndex('Alice', 'Amaka', 'Lord')).toEqual(['0', '', '1']);
-});
-
-it('should ensure searchIndex can handle an array of search terms', () => {
-    expect(index.searchIndex('Alice', ['Fellowship', ['dwarf']])).toEqual(
-    ['0', '1', '1']);
-});
-
-it('should be able to search a specific index', () => {
-    expect(index.searchSpecificIndex('Alice', bookPath)).toEqual(['0']);
-});
-
-});
-
-});
-
+})();

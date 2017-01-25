@@ -4,8 +4,9 @@
   "description": "inverted index app",
   "main": "index.js",
   "scripts": {
-    "start":"gulp",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "coveralls": "cat coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,10 @@
   "devDependencies": {
     "browser-sync": "^2.18.6",
     "gulp": "^3.9.1"
+  },
+  "dependencies": {
+    "eslint": "^3.14.0",
+    "eslint-config-airbnb-base": "^11.0.1",
+    "eslint-plugin-import": "^2.2.0"
   }
 }
