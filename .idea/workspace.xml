@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b2e2a060-46b6-45a6-b6f8-91ed21d057c8" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.jshintignore" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.jshintrc" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.hound.yml" afterPath="$PROJECT_DIR$/.hound.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.travis.yml" afterPath="$PROJECT_DIR$/.travis.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gulpfile.js" afterPath="$PROJECT_DIR$/gulpfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.css" afterPath="$PROJECT_DIR$/index.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jasmine/SpecRunner.html" afterPath="$PROJECT_DIR$/jasmine/SpecRunner.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jasmine/spec/inverted-index-test.js" afterPath="$PROJECT_DIR$/jasmine/spec/inverted-index-test.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/app.js" afterPath="$PROJECT_DIR$/src/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/inverted-index.js" afterPath="$PROJECT_DIR$/src/inverted-index.js" />
-    </list>
+    <list default="true" id="b2e2a060-46b6-45a6-b6f8-91ed21d057c8" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -483,12 +468,12 @@
       <workItem from="1484593815585" duration="9918000" />
       <workItem from="1484690785844" duration="3077000" />
       <workItem from="1484733455819" duration="2000" />
-      <workItem from="1484815230355" duration="87140000" />
+      <workItem from="1484815230355" duration="87666000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="143068000" />
+    <option name="totallyTimeSpent" value="143594000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="26" y="23" width="1222" height="717" extended-state="0" />
