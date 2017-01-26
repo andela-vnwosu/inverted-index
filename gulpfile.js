@@ -6,7 +6,7 @@ gulp.task('browserSync', ['watch'], function() {
         server: {
             baseDir: './',
         },
-        port: 3000,
+        port: process.env.PORT || 3000,
         ghostMode: false
     });
 });
