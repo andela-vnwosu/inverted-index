@@ -11,6 +11,7 @@ class InvertedIndex {
     // to save multiple inverted indexes
     this.indices = [];
     this.temp_search = [];
+    this.search_terms = [];
   }
   /**
    * creates an inverted index from the specified fileName or JsonObject
@@ -47,7 +48,11 @@ class InvertedIndex {
   searchIndex(term, choice) {
     this.temp_search = [];
     const result = [];
+    this.resolveSearchTerms(term);
+    term = this.search_terms.toString().replace(',', ' ');
+    this.search_terms = [];
     const terms = term.replace(/[^A-Za-z0-9\s]/g, '').toLocaleLowerCase().split(' ');
+    console.log(term);
     if (typeof choice === 'undefined') {
       choice = 'all';
     }
@@ -106,6 +111,19 @@ class InvertedIndex {
       return JSON.parse(json);
     } catch (e) {
       return false;
+    }
+  }
+  resolveSearchTerms() {
+    for (let arg of arguments) {
+      if (arg instanceof Object && typeof arg !== 'string') {
+        for (let item in arg) {
+          if (arg.hasOwnProperty(item)) {
+            this.resolveSearchTerms(arg[item]);
+          }
+        }
+      } else {
+        this.search_terms.push(arg);
+      }
     }
   }
 }

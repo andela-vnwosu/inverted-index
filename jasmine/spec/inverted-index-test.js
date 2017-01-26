@@ -40,7 +40,7 @@
         expect(index.indices.length).toBeGreaterThan(0);
       });
       it('should verify the index maps the string keys to the correct' +
-        ' objects in the JSON array', ()=> {
+        ' objects in the JSON array', () => {
         index.searchIndex('Alice, elf');
         expect(index.temp_search).toEqual([0, 1]);
       });
@@ -50,22 +50,21 @@
       });
     });
     describe('Search index', () => {
-      it('should ensure search does not take too long to execute', ()=> {
-        let runtimeThreshold = 1000;
-        let currentMillisecond =  new Date().getMilliseconds();
+      it('should ensure search does not take too long to execute', () => {
+        const runtimeThreshold = 1000;
+        const currentMillisecond =  new Date().getMilliseconds();
         index.searchIndex('Alice', ['Fellowship', ['dwarf'], 'in']);
-        let finalMilliseconds =  new Date().getMilliseconds();
-        let timeDifference = finalMilliseconds - currentMillisecond;
+        const finalMilliseconds =  new Date().getMilliseconds();
+        const timeDifference = finalMilliseconds - currentMillisecond;
         expect(timeDifference).toBeLessThan(runtimeThreshold);
       });
-      it('should ensure searchIndex can handle a varied number of search terms as ' +
-        'arguments', () => {
-        expect(index.searchIndex('Alice', 'Amaka', 'Lord')).toEqual(['0', '', '1']);
-      });
+
       it('should ensure searchIndex can handle an array of search terms', () => {
-        expect(index.searchIndex('Alice', ['Fellowship', ['dwarf']])).toEqual(
-          ['0', '1', '1']);
+        const searchTerms = ['Alice', 'ring'];
+        index.searchIndex(searchTerms);
+        expect(index.temp_search).toEqual([0, 1]);
       });
+
       it('should be able to search a specific index', () => {
         index.searchIndex('pelican', 1);
         expect(index.temp_search).toEqual([2]);

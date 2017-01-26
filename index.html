@@ -40,8 +40,7 @@
                             <div class="col-md-6" ng-repeat="wordindex in indicesArray track by $index">
                                 <table style="border: 1px solid black; margin-top: 25px;">
                                     <th>Term</th>
-                                    <td ng-repeat="counter in getLengthAsArray($index) track by $index">Doc {{ $index}}</td>
-                                    </thead>
+                                    <td ng-repeat="counter in getLengthAsArray($index) track by $index">&nbsp;&nbsp;Doc {{ $index}} &nbsp;&nbsp; </td>
                                     <tr ng-repeat="(word,locations) in wordindex">
                                         <td>{{ word }}</td>
                                         <td ng-repeat="counter in getLengthAsArray($parent.$index) track by $index">
@@ -72,7 +71,7 @@
                             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Search Files
                                 <span class="caret"></span></button>
                             <ul class="dropdown-menu">
-                                <li><a ng-click="searchSpecificFile(terms, 'all')">All</a></li>
+                                <li><a ng-click="searchIndex(terms)">All</a></li>
                                 <li ng-repeat="d in fileNamesArray track by $index ">
                                     <a ng-click="searchSpecificFile(terms, $index)">{{d}}</a>
                                 </li>
@@ -86,10 +85,10 @@
                         <div class="col-md-6" ng-repeat="wordindex in searchResult track by $index">
                             <table style="border: 1px solid black; margin-top: 25px;">
                                 <th>Term</th>
-                                <td ng-repeat="counter in getLengthAsArray($index) track by $index">Doc {{$index}}</td>
+                                <td ng-repeat="counter in getLengthAsArray($index, 0) track by $index"> &nbsp;&nbsp;Doc {{$index}}&nbsp;&nbsp; </td>
                                 <tr ng-repeat="(word,locations) in wordindex">
                                     <td>{{ word }}</td>
-                                    <td ng-repeat="counter in getLengthAsArray($parent.$index) track by $index">
+                                    <td ng-repeat="counter in getLengthAsArray($parent.$index, 0) track by $index">
                                         <span style="color: green" ng-if="locations.includes(counter)">&#10004;</span>
                                         <span style="color: red" ng-if="!locations.includes(counter)">&#10008;</span>
                                     </td>
