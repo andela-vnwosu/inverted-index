@@ -2,7 +2,7 @@
   "name": "invertedindex",
   "version": "1.0.0",
   "description": "inverted index app",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "start": "gulp browserSync",
     "test": "./node_modules/.bin/istanbul cover ./node_modules/.bin/karma start",
