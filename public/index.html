@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Inverted-Index</title>
     <link rel="stylesheet" href="css/index.css">
-    <link rel = "stylesheet" href="../lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-    <link rel = "stylesheet" href="../lib/sweetalert/dist/sweetalert.css">
+    <link rel ="stylesheet" href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel ="stylesheet" href="lib/sweetalert/dist/sweetalert.css">
 
 </head>
 <body ng-controller="InvertedIndexController">
@@ -23,11 +23,12 @@
         <div class="row ">
             <div class="main col-md-8 col-md-offset-2">
                 <div class="row main-box">
+                    <h5 class="json-only"> Upload file (JSON only)</h5>
                     <div class="col-sm-6 col-md-6">
                         <div id="upload-search">
-                            <h5> Upload file (JSON only)</h5>
+
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-12" id="search-container">
                                     <button type="create" id="create-index"
                                             ngf-select="uploadFile($files)" multiple="multiple" class=" upload-button btn-block">
                                         Upload File
@@ -36,12 +37,14 @@
 
                             </div>
 
-                            <div style="margin-top: 25px;">
-                                <div ng-repeat="fileName in fileNamesArray track by $index" >
-                                    <p >{{fileName}} <button class="btn btn-default" ng-click="createIndex($index)">Create Index</button></p>
+                            <div >
+                                <div ng-repeat="fileName in fileNamesArray track by $index" style="height: 40px">
+                                    <span >{{fileName}}</span>
+                                    <button class="btn btn-default pull-right" ng-click="createIndex($index)">Create Index</button>
+
                                 </div>
                             </div>
-                            <div class="row" style="max-height: 400px !important; overflow: scroll">
+                            <div class="row" style="max-height: 400px !important; overflow: auto">
                                 <div class="col-md-12" ng-repeat="wordindex in indicesArray track by $index">
                                     <table class="table">
                                         <thead>
@@ -68,10 +71,11 @@
                     <div class="col-sm-6 col-md-6">
                         <div>
                             <form>
-                                <div class="input-group" style="margin-top: 2.1em;">
+                                <div class="input-group">
                                     <input type="text" class="form-control" ng-model="terms" placeholder="Search">
                                     <div class="input-group-btn">
-                                        <button ng-click="searchIndex(terms)"  class="btn btn-default" type="button">
+                                        <button ng-click="searchIndex(terms)"
+                                                class="btn btn-default small-search-button" type="button">
                                             <i class="glyphicon glyphicon-search"></i>
                                         </button>
                                     </div>
@@ -131,13 +135,13 @@
 
     </div>
 
-    <script type="text/javascript" src="../lib/jquery/jquery-3.1.1.min.js"> </script>
-    <script src="../lib/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
-    <script src="../lib/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="../src/angular.min.js"></script>
-    <script type="text/javascript" src="../lib/ng-file-upload/ng-file-upload.min.js" ></script>
-    <script src="../src/inverted-index.js"></script>
-    <script src="../src/app.js"></script>
+    <script type="text/javascript" src="lib/jquery/jquery-3.1.1.min.js"> </script>
+    <script src="lib/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <script src="lib/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="src/angular.min.js"></script>
+    <script src="lib/ng-file-upload/ng-file-upload.min.js" ></script>
+    <script src="src/inverted-index.js"></script>
+    <script src="src/app.js"></script>
 
 
 

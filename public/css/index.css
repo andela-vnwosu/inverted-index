@@ -29,3 +29,18 @@ body{
     background-color: rgba(0, 0, 0, 0.51);
     border-color: #000000;
 }
+
+.small-search-button{
+    background: #183746 !important;
+    color: white !important;
+    border: 2px solid black !important;
+    margin-top: -1px !important;
+}
+
+.json-only{
+    padding:10px 16px 0;
+}
+
+#search-container{
+    margin-bottom: 10px !important;
+}
