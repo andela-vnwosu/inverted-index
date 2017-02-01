@@ -29,7 +29,7 @@
             $scope.filesArray.push(file);
             $scope.fileNamesArray.push(fileName);
           } catch (e) {
-            alert('not a valid json');
+            sweetAlert('','not a valid json', 'error');
           }
         });
       });
@@ -49,11 +49,10 @@
       }
       const arr = [];
 
-      // console.log('current file = ', $scope.currentFile);
+     
       // iterates over index of filesArray and populates filesArray
       const length = (typeof alt !== 'undefined' && $scope.currentFile !== '') ? $scope.currentFile.length :
         $scope.filesArray[index].length;
-      // console.log('The length', length);
 
       for (let i = 0; i < length; i += 1) {
         arr.push(i);
@@ -65,7 +64,7 @@
       // Check if the position of the index has not been saved
       if ($scope.createdIndex.indexOf(index) === -1) {
         $scope.indicesArray.push(createdIndex);
-        $scope.createdIndex.push(index);// if it has been created, save index position
+        $scope.createdIndex.push(index); // if it has been created, save index position
       }
     };
     $scope.searchIndex = (terms) => {

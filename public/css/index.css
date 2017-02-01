@@ -1,8 +1,31 @@
-.container {
-
-    width: 700px;
-    box-shadow: 0 0 2px 2px rgb(200,200,200);
-    margin-top: 150px;
+body{
 }
 
+#container{
+    margin-bottom: 60px;
+}
+.main {
 
+    box-shadow: 0 0 1px 1px rgb(200,200,200);
+    margin-top: 50px;
+}
+.navbar-default{
+    background-color: #f0f0f0 !important;
+}
+
+#choice-dropdown{
+    margin-top: 1em;
+}
+
+.main-box{
+    background-color: rgb(49, 112, 143);
+    color: #fff;
+}
+
+.upload-button{
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.51);
+    border-color: #000000;
+}

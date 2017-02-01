@@ -1,8 +1,9 @@
 // This program attempts to build an inverted index from a JSON file
 /**
-* @class InvertedIndex
-*
-*/
+ * Inverted Index
+ * @class
+ *
+ */
 class InvertedIndex {
   /**
   * @method constructor
@@ -14,10 +15,12 @@ class InvertedIndex {
     this.search_terms = [];
   }
   /**
+   * Create `index
+   *
    * creates an inverted index from the specified fileName or JsonObject
-   * @method createIndex
-   * @param {String} fileName
-   * @param {Object} jsonObject
+   *
+   * @param {String} fileName description
+   * @param {Object} jsonObject descr
    * @return {Object} index that was built
    */
   createIndex(fileName, jsonObject) {
@@ -73,7 +76,6 @@ class InvertedIndex {
     } else {
       choice = parseInt(choice);
       const currentIndex = this.indices[choice];
-      // console.log("Current index",current_index);
       result[0] = {};
       let savedWord;
       terms.map((word) => {
@@ -90,7 +92,7 @@ class InvertedIndex {
 
   /**
    * @method getIndex
-   * @param {Number} pos
+   * @param {Number} pos position in array
    * @return {Object} the index
    */
   getIndex(pos) {
@@ -98,6 +100,7 @@ class InvertedIndex {
       return this.index[0];
     }
     return this.index[pos];
+    
   }
 
   /**

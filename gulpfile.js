@@ -16,7 +16,7 @@ gulp.task('browserSync', ['watch'], function() {
 gulp.task('default', ['browserSync', 'watch']);
 
 gulp.task('watch', function() {
-//gulp.watch('./scss/*.scss', ['sass']);
+
   gulp.watch('index.css', browserSync.reload);
   gulp.watch('index.html', browserSync.reload);
   gulp.watch('jasmine/spec/inverted-index-test.js', browserSync.reload);

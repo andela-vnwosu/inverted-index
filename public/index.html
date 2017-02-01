@@ -3,120 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <title>Inverted-Index</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel = "stylesheet" href="lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel = "stylesheet" href="../lib/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel = "stylesheet" href="../lib/sweetalert/dist/sweetalert.css">
 
 </head>
 <body ng-controller="InvertedIndexController">
-    <div class="container">
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Inverted Index</a>
+        </div>
 
-        <div class="col-md-12">
-            <header style="background: #e8e8e8">
-                <h2 id="center-top " class="center-block text-center" style="padding-top: 20px">
-                        INDEX INVERTED
-                </h2>
-                <hr/>
-            </header>
-            <div class="row">
-                <div class="col-md-6">
-                    <div id="upload-search">
-                        <p> upload file (JSON only)</p>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button type="create" id="create-index"
-                                        ngf-select="uploadFile($files)" multiple="multiple" class="btn btn-primary btn-block">
-                                    Upload File
-                                </button>
+    </div><!-- /.container-fluid -->
+</nav>
+
+    <div id="container"  class="container-fluid">
+        <div class="row ">
+            <div class="main col-md-8 col-md-offset-2">
+                <div class="row main-box">
+                    <div class="col-sm-6 col-md-6">
+                        <div id="upload-search">
+                            <h5> Upload file (JSON only)</h5>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="create" id="create-index"
+                                            ngf-select="uploadFile($files)" multiple="multiple" class=" upload-button btn-block">
+                                        Upload File
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <div style="margin-top: 25px;">
+                                <div ng-repeat="fileName in fileNamesArray track by $index" >
+                                    <p >{{fileName}} <button class="btn btn-default" ng-click="createIndex($index)">Create Index</button></p>
+                                </div>
+                            </div>
+                            <div class="row" style="max-height: 400px !important; overflow: scroll">
+                                <div class="col-md-12" ng-repeat="wordindex in indicesArray track by $index">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>Term</th>
+                                            <th ng-repeat="counter in getLengthAsArray($index) track by $index">&nbsp;&nbsp;Doc {{ $index}} &nbsp;&nbsp; </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="(word,locations) in wordindex">
+                                            <td>{{ word }}</td>
+                                            <td ng-repeat="counter in getLengthAsArray($parent.$index) track by $index">
+                                                <span style="color: #ffffff" ng-if="locations.includes(counter)"> &#10004;</span>
+                                                <span style="color: red" ng-if="!locations.includes(counter)"> &#10008;</span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                         </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div>
+                            <form>
+                                <div class="input-group" style="margin-top: 2.1em;">
+                                    <input type="text" class="form-control" ng-model="terms" placeholder="Search">
+                                    <div class="input-group-btn">
+                                        <button ng-click="searchIndex(terms)"  class="btn btn-default" type="button">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </div>
 
-                        <div style="margin-top: 25px;">
-                            <div ng-repeat="fileName in fileNamesArray track by $index" >
-                                <p >{{fileName}}<button ng-click="createIndex($index)">Create Index</button></p>
+                                </div>
+                            </form>
+                            <div class="dropdown" id="choice-dropdown" >
+                                <button class="upload-button dropdown-toggle" type="button" data-toggle="dropdown">Search Files
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li><a ng-click="searchIndex(terms)">All</a></li>
+                                    <li ng-repeat="d in fileNamesArray track by $index ">
+                                        <a ng-click="searchSpecificFile(terms, $index)">{{d}}</a>
+                                    </li>
+
+                                </ul>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6" ng-repeat="wordindex in indicesArray track by $index">
-                                <table style="border: 1px solid black; margin-top: 25px;">
-                                    <th>Term</th>
-                                    <td ng-repeat="counter in getLengthAsArray($index) track by $index">&nbsp;&nbsp;Doc {{ $index}} &nbsp;&nbsp; </td>
-                                    <tr ng-repeat="(word,locations) in wordindex">
+                        <hr/>
+                        <h4>Search result</h4>
+                        <div class="row" style="max-height: 400px !important; overflow: scroll">
+
+                            <div class="col-md-12" ng-repeat="wordindex in searchResult track by $index">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Term</th>
+                                        <th ng-repeat="counter in getLengthAsArray($index, 0) track by $index">&nbsp;&nbsp;Doc {{ $index}} &nbsp;&nbsp; </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="(word, locations) in wordindex">
                                         <td>{{ word }}</td>
-                                        <td ng-repeat="counter in getLengthAsArray($parent.$index) track by $index">
-                                            <span style="color: green" ng-if="locations.includes(counter)"> &#10004;</span>
+                                        <td ng-repeat="counter in getLengthAsArray($parent.$index, 0) track by $index">
+                                            <span style="color: #ffffff" ng-if="locations.includes(counter)"> &#10004;</span>
                                             <span style="color: red" ng-if="!locations.includes(counter)"> &#10008;</span>
                                         </td>
                                     </tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
 
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div>
-                        <form>
-                            <div class="input-group" style="margin-top: 2.1em;">
-                                <input type="text" class="form-control" ng-model="terms" placeholder="Search">
-                                <div class="input-group-btn">
-                                    <button ng-click="searchIndex(terms)"  class="btn btn-default" type="button">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                </div>
-
-                            </div>
-                        </form>
-                        <div class="dropdown" style="margin-top: 1em; margin-left: 425px" >
-                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Search Files
-                                <span class="caret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a ng-click="searchIndex(terms)">All</a></li>
-                                <li ng-repeat="d in fileNamesArray track by $index ">
-                                    <a ng-click="searchSpecificFile(terms, $index)">{{d}}</a>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-                    <hr/>
-                    <h4>Search result</h4>
-                    <div class="row">
-                        <div class="col-md-6" ng-repeat="wordindex in searchResult track by $index">
-                            <table style="border: 1px solid black; margin-top: 25px;">
-                                <th>Term</th>
-                                <td ng-repeat="counter in getLengthAsArray($index, 0) track by $index"> &nbsp;&nbsp;Doc {{$index}}&nbsp;&nbsp; </td>
-                                <tr ng-repeat="(word,locations) in wordindex">
-                                    <td>{{ word }}</td>
-                                    <td ng-repeat="counter in getLengthAsArray($parent.$index, 0) track by $index">
-                                        <span style="color: green" ng-if="locations.includes(counter)">&#10004;</span>
-                                        <span style="color: red" ng-if="!locations.includes(counter)">&#10008;</span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+                <div>
 
                 </div>
-            </div>
-            <div>
+
+
+                <footer>
+
+                </footer>
 
             </div>
-
-
-            <footer>
-
-            </footer>
-
         </div>
+
     </div>
 
-    <script type="text/javascript" src="lib/jquery/jquery-3.1.1.min.js"> </script>
-    <script src="lib/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
-    <script src="src/angular.min.js"></script>
-    <script type="text/javascript" src="lib/ng-file-upload/ng-file-upload.min.js" ></script>
-    <script src="src/inverted-index.js"></script>
-    <script src="src/app.js"></script>
+    <script type="text/javascript" src="../lib/jquery/jquery-3.1.1.min.js"> </script>
+    <script src="../lib/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+    <script src="../lib/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../src/angular.min.js"></script>
+    <script type="text/javascript" src="../lib/ng-file-upload/ng-file-upload.min.js" ></script>
+    <script src="../src/inverted-index.js"></script>
+    <script src="../src/app.js"></script>
 
 
 

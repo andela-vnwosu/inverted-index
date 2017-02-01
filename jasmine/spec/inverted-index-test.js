@@ -30,7 +30,7 @@
     let index = new InvertedIndex();
     let emptyJson = [];
     describe('Read book data', ()=> {
-      it('should read the JSON file and assert that it is not empty', () => {
+      it('should read the JSON file and assert that it is not empty says Bayo', () => {
         expect(index.isValidJson(emptyJson)).toBe(false);
       });
     });
