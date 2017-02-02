@@ -3,8 +3,9 @@ const browserSync = require ('browser-sync').create();
 const browserify = require('browserify');
 const source = require('vinyl-source-stream');
 const browserTest = require ("browser-sync").create();
+const rename = require("gulp-rename");
 
-gulp.task('browserSync', ['watch'], function() {
+gulp.task('browserSync',() => {
     browserSync.init({
         server: {
             baseDir: './public',
@@ -15,7 +16,7 @@ gulp.task('browserSync', ['watch'], function() {
     });
 });
 
-gulp.task('browserTest', () => {
+gulp.task('browserTest', ['build'], () => {
   browserTest.init({
     server: {
       baseDir: ['./public/src', './jasmine'],
@@ -28,19 +29,23 @@ gulp.task('browserTest', () => {
 });
 
 
-gulp.task('default', ['browserSync', 'browserTest', 'watch']);
+gulp.task('default', ['browserSync', 'browserTest', 'watchTest', 'watch', 'build']);
 
-gulp.task('watch', function() {
+gulp.task('watch', ['browserSync'], () => {
 
   gulp.watch('public/css/index.css', browserSync.reload);
   gulp.watch('public/index.html', browserSync.reload);
-  gulp.watch('jasmine/spec/tests/test-spec.js', browserSync.reload);
-  gulp.watch('./src/*.js', browserSync.reload);
+  gulp.watch('public/src/*.js', browserSync.reload);
 });
 
-gulp.task('browserify', () =>
-  browserify('jasmine/spec/inverted-index-test.js')
-    .bundle()
-    .pipe(source('test-spec.js'))
-    .pipe(gulp.dest('./jasmine/spec/tests'))
+gulp.task('watchTest', ['browserTest'], () => {
+  gulp.watch(['public/src/inverted-index.js', 'jasmine/spec/tests/test-spec.js'], ['build']);
+  gulp.watch(["public/src/inverted-index.js", 'jasmine/spec/tests/test-spec.js'], browserTest.reload);
+});
+
+gulp.task('build', () => {
+    gulp.src('jasmine/spec/inverted-index-test.js')
+      .pipe(rename('bundle.js'))
+      .pipe(gulp.dest("jasmine/build"));
+  }
 );

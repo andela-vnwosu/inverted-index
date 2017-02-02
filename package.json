@@ -4,8 +4,8 @@
   "description": "inverted index app",
   "main": "index.html",
   "scripts": {
-    "start": "gulp browserSync",
-    "test": "./node_modules/.bin/istanbul cover ./node_modules/.bin/karma start",
+    "start": "gulp",
+    "test": "gulp",
     "coveralls": "cat coverage/lcov.info | coveralls"
   },
   "repository": {
@@ -24,6 +24,7 @@
   "homepage": "https://github.com/andela-vnwosu/inverted-index#readme",
   "dependencies": {
     "browser-sync": "^2.18.6",
+    "browserify": "^14.0.0",
     "coveralls": "^2.11.15",
     "gulp": "^3.9.1",
     "istanbul": "^0.4.5",
@@ -31,6 +32,10 @@
     "karma": "^1.4.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-firefox-launcher": "^1.0.0",
-    "karma-jasmine": "^1.1.0"
+    "karma-jasmine": "^1.1.0",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "devDependencies": {
+    "gulp-rename": "^1.2.2"
   }
 }

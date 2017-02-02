@@ -16,7 +16,7 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     files: [
       'public/src/inverted-index.js',
-      './jasmine/spec/inverted-index-test.js'
+      './jasmine/spec/tests/test-spec.js'
     ],
 
 
@@ -61,7 +61,7 @@ module.exports = function (config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: true,
+    singleRun: false,
 
     // Concurrency level
     // how many browser should be started simultaneous
