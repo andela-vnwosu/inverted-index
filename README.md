@@ -5,16 +5,61 @@
 [![Test Coverage](https://codeclimate.com/github/andela-vnwosu/inverted-index/badges/coverage.svg)](https://codeclimate.com/github/andela-vnwosu/inverted-index/coverage)
 [![Issue Count](https://codeclimate.com/github/andela-vnwosu/inverted-index/badges/issue_count.svg)](https://codeclimate.com/github/andela-vnwosu/inverted-index)
 
-About this Application
 
-This Inverted Index allows you to perform quick searches for a number of words. An inverted index consists of a list of all the unique words that appear in any document, and for each word, a list of the documents in which it appears.
+# Inverted-Index
+An application that takes in a __JSON__ array of text objects, creates an index from the array, allowing users to search for words contained in the array.
 
-How to use the application
+## Application Features
+- The format of the content(s) of the JSON file is as shown below:
+```
+[
+  {
+    "title": "The cyprus love affair",
+    "text": "A book by Dennis Robins. I lay my love beneath your feet, thread softly, because you thread upon my dreams"
+  },
 
-1. Upload a valid JSON file
+  {
+    "title" : "the pelican brief",
+    "text" : "this is also a book by John Grisham, talking about the law and law practice. He hardly writes about love and dreams and emotions."
+  }
+]
+
+```
+* An Index of an uploaded file can be created, with:
+  * The title and text values being the indexed words
+  * The values against the titles being the headings of documents the indexed words can be found.
+* Particular words (or strings of words) can be searched in already indexed files.
+
+## Usage Instructions
+- Web use
+The application is hosted on heroku at the following address:
+[heroku app address] (https://markie-inverted-index.herokuapp.com/)
+
+The buttons available on the user interface guide a user through the process.
+
+- Local Use
+```
+git clone https://github.com/andela-vnwosu/inverted-index/tree/develop
+
+```
+#### On an appropriate command line interface, navigate into the directory you cloned the repo into and:
+- Install all the dependencies with `npm install`  (It is assumed you have [Nodejs](nodejs.org) installed already):
+
+- Run Tests for the application with:
+  `gulp` (which is the test command defined in the package manager __package.json__)
+
+- Start the Application with:
+  `gulp` and gain access to the application interface on your browser via http://localhost:3000/
 
 
-2. Select file to index and use the create index button to generate the index
 
-
-3. Enter word(s) to search. Then click on all or any of the file you want to search from and use the search icon to search
+## The application is written with the following Services & Javascript Technologies:
+- Gulp (Task Runner - automates tasks that are recurrent)
+- Karma (Generates the Test Coverage Folder)
+- Jasmine (Test Runner)
+- Travis CI (For Continous Integration and badge)
+- Coveralls (To compute Test Coverage percentage and add a badge that displays the coverage percentage)
+- Code climate (For coverage)
+- Hound (To prevent style violations)
+- AngularJs (For making features of the view responsive)
+- Bootstrap (For Styling the view)
