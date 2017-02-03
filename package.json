@@ -4,8 +4,9 @@
   "description": "inverted index app",
   "main": "index.html",
   "scripts": {
-    "start": "gulp",
-    "test": "gulp",
+    "start": "gulp browserSync",
+    "test": "./node_modules/.bin/istanbul cover ./node_modules/.bin/karma start",
+    "jasmine": "gulp watchTest",
     "coveralls": "cat coverage/lcov.info | coveralls"
   },
   "repository": {
