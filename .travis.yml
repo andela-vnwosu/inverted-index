@@ -17,3 +17,4 @@ before_script:
 # Send coverage data to Coveralls
 after_script:
     - npm run coveralls
+    - node node_modules/codeclimate-test-reporter/bin/codeclimate < coverage/**/lcov.info
