@@ -6,7 +6,7 @@ const book2 = require('../book2.json');
 const emptyBook = require('../emptyBook.json');
 const invalidBook = require('../invalidBook.json');
 (() => {
-  describe('invertedIndex', ()=> {
+  describe('invertedIndex', () => {
     const index = new InvertedIndex();
     const emptyJson = [];
     const invalidString = 'I am a girl';
@@ -15,13 +15,16 @@ const invalidBook = require('../invalidBook.json');
         expect(index.isValidJson(emptyJson)).toBe(false);
       });
       
+      it('should read the JSON file and assert that it has tittle and text', () => {
+        expect(index.isEmpty(invalidBook)).toBe(true);
+      });
+      
       it('Ensures the file content is actually a valid JSON Array', ()=>{
         expect(index.isValidJson(invalidString)).toBe(false);
       })
-      
     });
     describe('Populate Index', () => {
-      index.createIndex('book.json', books);
+      index.createIndex(books);
       it('should verify that the index is created', () => {
         expect(index.indices.length).toBeGreaterThan(0);
       });
@@ -31,7 +34,7 @@ const invalidBook = require('../invalidBook.json');
         expect(index.temp_search).toEqual([0, 1]);
       });
       it('Should verify that multiple index could be built', () => {
-        index.createIndex('book2.json', book2);
+        index.createIndex(book2);
         expect(index.indices.length).toEqual(2);
       });
     });
