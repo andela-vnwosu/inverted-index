@@ -26,8 +26,13 @@
         $timeout(() => {
           try {
             const file = angular.fromJson(reader.result);
-            $scope.filesArray.push(file);
-            $scope.fileNamesArray.push(fileName);
+            if (!invertedIndex.isEmpty(file)) {
+              $scope.filesArray.push(file);
+              $scope.fileNamesArray.push(fileName);
+            } else {
+              sweetAlert('','not a valid json', 'error');
+            }
+          
           } catch (e) {
             sweetAlert('','not a valid json', 'error');
           }
@@ -60,7 +65,7 @@
       return arr;
     };
     $scope.createIndex = (index) => {
-      const createdIndex = invertedIndex.createIndex('book.json', $scope.filesArray[index]);
+      const createdIndex = invertedIndex.createIndex($scope.filesArray[index]);
       // Check if the position of the index has not been saved
       if ($scope.createdIndex.indexOf(index) === -1) {
         $scope.indicesArray.push(createdIndex);
