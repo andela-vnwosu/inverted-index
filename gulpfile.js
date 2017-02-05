@@ -1,6 +1,6 @@
 const gulp = require('gulp');
 const browserSync = require ('browser-sync').create();
-const browserify = require('browserify');
+const browserify = require('gulp-browserify');
 const source = require('vinyl-source-stream');
 const browserTest = require ("browser-sync").create();
 const rename = require("gulp-rename");
@@ -10,9 +10,9 @@ gulp.task('browserSync',() => {
         server: {
             baseDir: './public',
         },
-        port: process.env.PORT || 3000,
+        port: 4000,
       ui: false,
-        ghostMode: false
+      ghostMode: false
     });
 });
 
@@ -22,30 +22,28 @@ gulp.task('browserTest', ['build'], () => {
       baseDir: ['./public/src', './jasmine'],
       index: 'SpecRunner.html'
     },
-    port: 8888,
-    ui: false,
-    ghostMode: false
+    port: 9000,
+
   });
 });
 
 
-gulp.task('default', ['browserSync', 'browserTest', 'watchTest', 'watch', 'build']);
+gulp.task('default', ['browserSync','browserTest', 'watch', 'build']);
 
-gulp.task('watch', ['browserSync'], () => {
-
-  gulp.watch('public/css/index.css', browserSync.reload);
-  gulp.watch('public/index.html', browserSync.reload);
-  gulp.watch('public/src/*.js', browserSync.reload);
-});
-
-gulp.task('watchTest', ['browserTest'], () => {
-  gulp.watch(['public/src/inverted-index.js', 'jasmine/spec/tests/test-spec.js'], ['build']);
+gulp.task('watch', () => {
+  gulp.watch(['public/css/index.css', 'public/index.html', 'public/src/*.js'], browserSync.reload);
+  gulp.watch(['public/src/inverted-index.js', 'jasmine/spec/inverted-index-test.js', 
+  'jasmine/spec/tests/test-spec.js'], ['build']);
   gulp.watch(["public/src/inverted-index.js", 'jasmine/spec/tests/test-spec.js'], browserTest.reload);
 });
 
-gulp.task('build', () => {
-    gulp.src('jasmine/spec/inverted-index-test.js')
-      .pipe(rename('bundle.js'))
-      .pipe(gulp.dest("jasmine/build"));
-  }
-);
+gulp.task('build', function() {
+    // Single entry point to browserify 
+   gulp.src('jasmine/spec/inverted-index-test.js')
+        .pipe(browserify({
+          insertGlobals : true,
+          debug : !gulp.env.production
+        }))
+        .pipe(rename('test-spec.js'))
+        .pipe(gulp.dest('jasmine/spec/tests/'))
+});
