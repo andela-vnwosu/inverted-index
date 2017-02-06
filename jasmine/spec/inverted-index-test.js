@@ -10,7 +10,7 @@ const invalidBook = require('../invalidBook.json');
     const index = new InvertedIndex();
     describe('Read book data', () => {
       it('should read the JSON file and assert that it is not empty', () => {
-        expect(index.isValidJson(emptyJson)).toBe(false);
+        expect(index.isValidJson(emptyBook)).toBe(false);
       });
       
       it('should assert that the JSON object is not empty, and contains title and text properties', () => {
@@ -18,7 +18,7 @@ const invalidBook = require('../invalidBook.json');
       });
       
       it('Ensures the file content is actually a valid JSON', () => {
-        expect(index.isValidJson(invalidString)).toBe(false);
+        expect(index.isValidJson(invalidBook)).toBe(false);
       })
     });
     describe('Populate Index', () => {
