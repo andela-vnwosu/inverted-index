@@ -1,8 +1,6 @@
 // This program attempts to build an inverted index from a JSON file
 /**
- * Inverted Index
- * @class
- *
+ * @class Inverted Index
  */
 class InvertedIndex {
   /**
@@ -11,20 +9,19 @@ class InvertedIndex {
   constructor() {
     // to save multiple inverted indexes
     this.indices = [];
-    this.temp_search = [];
-    this.search_terms = [];
+    this.tempSearch = [];
+    this.searchTerms = [];
   }
   /**
-   * Create `index
-   *
+   * Create index
    * creates an inverted index from the specified fileName or JsonObject
-   * @param {Object} jsonObject the json data to build
+   * @param {Object} bookDocument the json data to build
    * @return {Object} index that was built
    */
-  createIndex(jsonObject) {
+  createIndex(bookDocument) {
     const index = {};
-    jsonObject.map((sentence, count) => {
-      this.filterString((`${sentence.title} ${sentence.text}`))
+    bookDocument.map((sentence, count) => {
+      this.filterText((`${sentence.title} ${sentence.text}`))
       .split(' ')
       .map((word) => {
         if (index[word] && !index[word][count]) {
@@ -38,7 +35,7 @@ class InvertedIndex {
     return index;
   }
 
-  filterString(str) {
+  filterText(str) {
     return str.replace(/[^A-Za-z0-9\s]/g, '')
         .toLowerCase();
   }
@@ -51,12 +48,12 @@ class InvertedIndex {
    * @return {Array} result 
    */
   searchIndex(term, selectedFile) {
-    this.temp_search = [];
+    this.tempSearch = [];
     const result = [];
     this.resolveSearchTerms(term);
-    term = this.search_terms.toString().replace(',', ' ');
-    this.search_terms = [];
-    const terms = this.filterString(term).split(' ');
+    term = this.searchTerms.toString().replace(',', ' ');
+    this.searchTerms = [];
+    const terms = this.filterText(term).split(' ');
     if (typeof selectedFile === 'undefined') {
       selectedFile = 'all';
     }
@@ -69,7 +66,7 @@ class InvertedIndex {
             if (savedWord === word) {
               result[pos][word] = index[savedWord];
               // save position of word occurrence in the document
-              this.temp_search.push(index[savedWord][0]);
+              this.tempSearch.push(index[savedWord][0]);
             }
           }
         });
@@ -83,7 +80,7 @@ class InvertedIndex {
         for (savedWord in currentIndex) {
           if (savedWord === word) {
             result[0][word] = this.indices[selectedFile][savedWord];
-            this.temp_search.push(this.indices[selectedFile][savedWord][0]);
+            this.tempSearch.push(this.indices[selectedFile][savedWord][0]);
           }
         }
       });
@@ -151,7 +148,7 @@ class InvertedIndex {
           }
         }
       } else {
-        this.search_terms.push(arg);
+        this.searchTerms.push(arg);
       }
     }
   }
