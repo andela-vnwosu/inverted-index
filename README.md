@@ -2,9 +2,6 @@
 [![Build Status](https://travis-ci.org/andela-vnwosu/inverted-index.svg?branch=master)](https://travis-ci.org/andela-vnwosu/inverted-index)
 [![Coverage Status](https://coveralls.io/repos/github/andela-vnwosu/inverted-index/badge.svg?branch=feature)](https://coveralls.io/github/andela-vnwosu/inverted-index?branch=feature)
 [![Code Climate](https://codeclimate.com/github/andela-vnwosu/inverted-index/badges/gpa.svg)](https://codeclimate.com/github/andela-vnwosu/inverted-index)
-[![Test Coverage](https://codeclimate.com/github/andela-vnwosu/inverted-index/badges/coverage.svg)](https://codeclimate.com/github/andela-vnwosu/inverted-index/coverage)
-[![Issue Count](https://codeclimate.com/github/andela-vnwosu/inverted-index/badges/issue_count.svg)](https://codeclimate.com/github/andela-vnwosu/inverted-index)
-
 
 # Inverted-Index
 An application that takes in a __JSON__ array of text objects, creates an index from the array, allowing users to search for words contained in the array.
