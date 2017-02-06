@@ -1,41 +1,30 @@
 /**
  * Created by chiamakanwosu on 06/01/2017.
  */
+const books = require('../books.json');
+const book2 = require('../book2.json');
+const emptyBook = require('../emptyBook.json');
+const invalidBook = require('../invalidBook.json');
 (() => {
-  "use strict";
-  describe('invertedIndex', ()=> {
-    let bookPath = [{
-        "title": "Alice in Wonderland",
-        "text": "Alice falls into a rabbit hole and enters a world full of imagination."
-    },
-      {
-        "title": "The Lord of the Rings: The Fellowship of the Ring.",
-        "text": "An unusual alliance of man, elf, dwarf, wizard and hobbit seek to destroy a powerful ring."
-      }
-    ];
-    let documentJson = [
-      {
-        "title": "The cyprus love affair",
-        "text": "A book by Dennis Robins. I lay my love beneath your feet, thread softly, because you thread upon my dreams"
-      },
-      {
-        "title": "the runaway jury",
-        "text": "This is a fictional book by John Grisham, an award winning novelist"
-      },
-      {
-        "title" : "the pelican brief",
-        "text" : "this is also a book by John Grisham, talking about the law and law practice. He hardly writes about love and dreams and emotions."
-      }
-    ];
-    let index = new InvertedIndex();
-    let emptyJson = [];
+  describe('invertedIndex', () => {
+    const index = new InvertedIndex();
+    const emptyJson = [];
+    const invalidString = 'I am a girl';
     describe('Read book data', ()=> {
-      it('should read the JSON file and assert that it is not empty', () => {
+      it('should read the JSON file and assert that it is not empty says', () => {
         expect(index.isValidJson(emptyJson)).toBe(false);
       });
+      
+      it('should read the JSON file and assert that it has tittle and text', () => {
+        expect(index.isEmpty(invalidBook)).toBe(true);
+      });
+      
+      it('Ensures the file content is actually a valid JSON Array', ()=>{
+        expect(index.isValidJson(invalidString)).toBe(false);
+      })
     });
     describe('Populate Index', () => {
-      index.createIndex('book.json', bookPath);
+      index.createIndex(books);
       it('should verify that the index is created', () => {
         expect(index.indices.length).toBeGreaterThan(0);
       });
@@ -45,7 +34,7 @@
         expect(index.temp_search).toEqual([0, 1]);
       });
       it('Should verify that multiple index could be built', () => {
-        index.createIndex('document.json', documentJson);
+        index.createIndex(book2);
         expect(index.indices.length).toEqual(2);
       });
     });

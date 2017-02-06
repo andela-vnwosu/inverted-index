@@ -15,8 +15,8 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      './src/inverted-index.js',
-      './jasmine/spec/inverted-index-test.js'
+      'public/src/inverted-index.js',
+      './jasmine/spec/tests/test-spec.js'
     ],
 
 
@@ -73,4 +73,4 @@ module.exports = function (config) {
       }
     }
   });
-}
+};
