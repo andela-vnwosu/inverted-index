@@ -67,7 +67,7 @@ const invalidBook = require('../invalidBook.json');
       it('should verify the index maps the string keys to the correct' +
         ' objects in the JSON array', () => {
         index.searchIndex('Alice, elf');
-        expect(index.temp_search).toEqual([0, 1]);
+        expect(index.tempSearch).toEqual([0, 1]);
       });
       it('Should verify that multiple index could be built', () => {
         index.createIndex(book2);
@@ -87,12 +87,12 @@ const invalidBook = require('../invalidBook.json');
       it('should ensure searchIndex can handle an array of search terms', () => {
         const searchTerms = ['Alice', 'ring'];
         index.searchIndex(searchTerms);
-        expect(index.temp_search).toEqual([0, 1]);
+        expect(index.tempSearch).toEqual([0, 1]);
       });
 
       it('should be able to search a specific index', () => {
         index.searchIndex('pelican', 1);
-        expect(index.temp_search).toEqual([2]);
+        expect(index.tempSearch).toEqual([2]);
       });
     });
   });
