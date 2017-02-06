@@ -1,0 +1,45 @@
+body{
+}
+
+#container{
+    margin-bottom: 60px;
+}
+.main {
+    margin-top: 50px;
+}
+.navbar-default{
+    background-color: #f0f0f0 !important;
+}
+
+#choice-dropdown{
+    margin-top: 1em;
+}
+
+.main-box{
+    background-color: rgb(49, 112, 143);
+    color: #fff;
+    border-radius: 2%;
+}
+
+.upload-button{
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.51);
+    border-color: #000000;
+}
+
+.small-search-button{
+    background: #183746 !important;
+    color: white !important;
+    border: 2px solid black !important;
+    margin-top: -1px !important;
+}
+
+.json-only{
+    padding:10px 16px 0;
+}
+
+#search-container{
+    margin-bottom: 10px !important;
+}
