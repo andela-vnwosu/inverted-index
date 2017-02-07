@@ -10,7 +10,7 @@ gulp.task('browserSync',() => {
         server: {
             baseDir: './public',
         },
-        port: 4000,
+        port: process.env.PORT || 4000,
       ui: false,
       ghostMode: false
     });
