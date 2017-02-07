@@ -77,7 +77,6 @@
       $scope.currentFile = '';
     };
     $scope.searchSpecificFile = (terms, index) => {
-      console.log(index);
       $scope.searchResult = invertedIndex.searchIndex(terms, index);
       $scope.currentFile = $scope.filesArray[index];
     };
