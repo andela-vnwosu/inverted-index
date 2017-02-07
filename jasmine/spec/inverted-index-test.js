@@ -10,15 +10,15 @@ const invalidBook = require('../invalidBook.json');
     const index = new InvertedIndex();
     describe('Read book data', () => {
       it('should read the JSON file and assert that it is not empty', () => {
-        expect(index.isValidJson(emptyBook)).toBe(false);
+        expect(InvertedIndex.isValidJson(emptyBook)).toBe(false);
       });
       
       it('should assert that the JSON object is not empty, and contains title and text properties', () => {
-        expect(index.isEmpty(invalidBook)).toBe(true);
+        expect(InvertedIndex.isEmpty(invalidBook)).toBe(true);
       });
       
       it('Ensures the file content is actually a valid JSON', () => {
-        expect(index.isValidJson(invalidBook)).toBe(false);
+        expect(InvertedIndex.isValidJson(invalidBook)).toBe(false);
       })
     });
     describe('Populate Index', () => {
@@ -40,7 +40,7 @@ const invalidBook = require('../invalidBook.json');
       it('should ensure search does not take too long to execute', () => {
         const runtimeThreshold = 1000;
         const currentMillisecond =  new Date().getMilliseconds();
-        index.searchIndex('Alice', ['Fellowship', ['dwarf'], 'in']);
+        index.searchIndex('Alice', 0);
         const finalMilliseconds =  new Date().getMilliseconds();
         const timeDifference = finalMilliseconds - currentMillisecond;
         expect(timeDifference).toBeLessThan(runtimeThreshold);
