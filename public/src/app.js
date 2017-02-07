@@ -26,7 +26,7 @@
         $timeout(() => {
           try {
             const file = angular.fromJson(reader.result);
-            if (!invertedIndex.isEmpty(file)) {
+            if (!InvertedIndex.isEmpty(file)) {
               $scope.filesArray.push(file);
               $scope.fileNamesArray.push(fileName);
             } else {
@@ -77,6 +77,7 @@
       $scope.currentFile = '';
     };
     $scope.searchSpecificFile = (terms, index) => {
+      console.log(index);
       $scope.searchResult = invertedIndex.searchIndex(terms, index);
       $scope.currentFile = $scope.filesArray[index];
     };
