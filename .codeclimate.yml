@@ -10,7 +10,8 @@ engines:
       Similar code:
         enabled: false
     config:
-      languages: javascript
+      languages:
+        - javascript
 ratings:
   paths: public/src/*.js
 exclude_paths: []
