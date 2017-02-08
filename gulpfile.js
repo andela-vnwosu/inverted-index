@@ -39,8 +39,8 @@ gulp.task('watch', () => {
 gulp.task('build', function() {
   gulp.src('jasmine/spec/inverted-index-test.js')
     .pipe(browserify({
-      insertGlobals : true,
-      debug : !gulp.env.production
+      insertGlobals: true,
+      debug: !gulp.env.production
     }))
         .pipe(rename('test-spec.js'))
         .pipe(gulp.dest('jasmine/spec/tests/'))
