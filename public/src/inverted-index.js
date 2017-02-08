@@ -1,8 +1,5 @@
-// This program attempts to build an inverted index from a JSON file
 /**
- * Inverted Index
- * @class
- *
+ * class Inverted Index
  */
 class InvertedIndex {
   /**
@@ -11,22 +8,21 @@ class InvertedIndex {
   constructor() {
     // to save multiple inverted indexes
     this.indices = [];
-    this.temp_search = [];
-    this.search_terms = [];
+    this.tempSearch = [];
+    this.searchTerms = [];
   }
   /**
-   * Create `index
-   *
+   * Create index
    * creates an inverted index from the specified fileName or JsonObject
-   * @param {Object} jsonObject the json data to build
+   * @param {Object} bookDocument the json data to build
    * @return {Object} index that was built
    */
-  createIndex(jsonObject) {
+  createIndex(bookDocument) {
     const index = {};
-    jsonObject.map((sentence, count) => {
-      this.filterString((`${sentence.title} ${sentence.text}`))
+    bookDocument.forEach((sentence, count) => {
+      InvertedIndex.filterText((`${sentence.title} ${sentence.text}`))
       .split(' ')
-      .map((word) => {
+      .forEach((word) => {
         if (index[word] && !index[word][count]) {
           index[word].push(count);
         } else {
@@ -37,8 +33,12 @@ class InvertedIndex {
     this.indices.push(index);
     return index;
   }
-
-  filterString(str) {
+  /**
+   * @method filterText
+   * @param {String} str the string to perform the regex
+   * @return{String} returns the striped string
+   */
+  static filterText(str) {
     return str.replace(/[^A-Za-z0-9\s]/g, '')
         .toLowerCase();
   }
@@ -47,45 +47,40 @@ class InvertedIndex {
    * Searches the recently indexed object for matches with specified parameters
    * @method searchIndex
    * @param {String} term terms to search for
-   * @param {String} selectedFile the specific file to search in
-   * @return {Array} result 
+   * @param {String} selectedFile the specific index of file to search in
+   * @return {Array} result
    */
   searchIndex(term, selectedFile) {
-    this.temp_search = [];
+    this.tempSearch = [];
     const result = [];
     this.resolveSearchTerms(term);
-    term = this.search_terms.toString().replace(',', ' ');
-    this.search_terms = [];
-    const terms = this.filterString(term).split(' ');
-    if (typeof selectedFile === 'undefined') {
-      selectedFile = 'all';
-    }
-    if (selectedFile === 'all') {
-      this.indices.map((index, pos) => {
+    term = this.searchTerms.toString().replace(',', ' ');
+    this.searchTerms = [];
+    const terms = InvertedIndex.filterText(term).split(' ');
+    if (selectedFile === undefined || selectedFile === 'all') {
+      this.indices.forEach((index, pos) => {
         result[pos] = {};
-        let savedWord;
-        terms.map((word) => {
-          for (savedWord in index) {
+        terms.forEach((word) => {
+          Object.keys(index).forEach((savedWord) => {
             if (savedWord === word) {
               result[pos][word] = index[savedWord];
               // save position of word occurrence in the document
-              this.temp_search.push(index[savedWord][0]);
+              this.tempSearch.push(index[savedWord][0]);
             }
-          }
+          });
         });
       });
     } else {
-      selectedFile = parseInt(selectedFile);
+      selectedFile = parseInt(selectedFile, 10);
       const currentIndex = this.indices[selectedFile];
       result[0] = {};
-      let savedWord;
-      terms.map((word) => {
-        for (savedWord in currentIndex) {
+      terms.forEach((word) => {
+        Object.keys(currentIndex).forEach((savedWord) => {
           if (savedWord === word) {
             result[0][word] = this.indices[selectedFile][savedWord];
-            this.temp_search.push(this.indices[selectedFile][savedWord][0]);
+            this.tempSearch.push(this.indices[selectedFile][savedWord][0]);
           }
-        }
+        });
       });
     }
     return result;
@@ -101,16 +96,14 @@ class InvertedIndex {
       return this.index[0];
     }
     return this.index[pos];
-    
   }
-
   /**
    * isValidJson checks if json is valid
    * @method isValidJson
    * @param {Object} json
    * @return {Boolean} returns true if valid json
    */
-  isValidJson(json) {
+  static isValidJson(json) {
     try {
       return JSON.parse(json);
     } catch (e) {
@@ -125,34 +118,44 @@ class InvertedIndex {
    * @param {Object} arrayObject
    * @return {Boolean} Returns true if empty
    * */
-  isEmpty(arrayObject) {
+  static isEmpty(arrayObject) {
+    let isEmpty = true;
     if (typeof arrayObject === 'object') {
       // it's an object
       if ((Object.keys(arrayObject).length > 0)) {
-        //it has some contents
-        for (let key in arrayObject) {
-          if (arrayObject[key].hasOwnProperty('title') &&
-              arrayObject[key].hasOwnProperty('text')) {
-            //the content is an array of object with property text and title
+        // it has some contents
+        Object.keys(arrayObject).forEach((key) => {
+          const item = arrayObject[key];
+          if ((item.title) && (item.text)) {
+            // the content is an array of object with property text and title
+            isEmpty = false;
             return false;
           }
-        }
+        });
       }
     }
-
-    return true;
+    return isEmpty;
   }
-  resolveSearchTerms() {
-    for (let arg of arguments) {
-      if (arg instanceof Object && typeof arg !== 'string') {
-        for (let item in arg) {
-          if (arg.hasOwnProperty(item)) {
-            this.resolveSearchTerms(arg[item]);
+
+  /**
+   * Resolves complex search terms into linear array and saves
+   * to the searchTerm property
+   *
+   * @method resolveSearchTerms
+   * @return {undefined}
+   */
+  resolveSearchTerms(...allTerms) {
+    Object.keys(allTerms).forEach((key) => {
+      const term = allTerms[key];
+      if (term instanceof Object && typeof term !== 'string') {
+        Object.keys(term).forEach((item) => {
+          if ((item in term)) {
+            this.resolveSearchTerms(term[item]);
           }
-        }
+        });
       } else {
-        this.search_terms.push(arg);
+        this.searchTerms.push(term);
       }
-    }
+    });
   }
 }
