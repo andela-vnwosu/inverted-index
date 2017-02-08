@@ -36,9 +36,10 @@
     "karma-chrome-launcher": "^2.0.0",
     "karma-firefox-launcher": "^1.0.0",
     "karma-jasmine": "^1.1.0",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "gulp-rename": "^1.2.2"
   },
   "devDependencies": {
-    "gulp-rename": "^1.2.2"
+
   }
 }

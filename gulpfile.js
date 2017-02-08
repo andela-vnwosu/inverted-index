@@ -6,14 +6,14 @@ const browserTest = require ("browser-sync").create();
 const rename = require("gulp-rename");
 
 gulp.task('browserSync',() => {
-    browserSync.init({
-        server: {
-            baseDir: './public',
-        },
-        port: 4000,
-      ui: false,
-      ghostMode: false
-    });
+  browserSync.init({
+    server: {
+      baseDir: './public',
+    },
+    port: process.env.PORT || 4000,
+    ui: false,
+    ghostMode: false
+  });
 });
 
 gulp.task('browserTest', ['build'], () => {
@@ -23,7 +23,6 @@ gulp.task('browserTest', ['build'], () => {
       index: 'SpecRunner.html'
     },
     port: 9000,
-
   });
 });
 
@@ -38,12 +37,11 @@ gulp.task('watch', () => {
 });
 
 gulp.task('build', function() {
-    // Single entry point to browserify 
-   gulp.src('jasmine/spec/inverted-index-test.js')
-        .pipe(browserify({
-          insertGlobals : true,
-          debug : !gulp.env.production
-        }))
+  gulp.src('jasmine/spec/inverted-index-test.js')
+    .pipe(browserify({
+      insertGlobals: true,
+      debug: !gulp.env.production
+    }))
         .pipe(rename('test-spec.js'))
         .pipe(gulp.dest('jasmine/spec/tests/'))
 });

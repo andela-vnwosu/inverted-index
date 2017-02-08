@@ -26,7 +26,7 @@
         $timeout(() => {
           try {
             const file = angular.fromJson(reader.result);
-            if (!invertedIndex.isEmpty(file)) {
+            if (!InvertedIndex.isEmpty(file)) {
               $scope.filesArray.push(file);
               $scope.fileNamesArray.push(fileName);
             } else {
