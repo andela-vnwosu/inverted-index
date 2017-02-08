@@ -126,7 +126,7 @@ class InvertedIndex {
         // it has some contents
         Object.keys(arrayObject).forEach((key) => {
           const item = arrayObject[key];
-          if ((item['title']) && (item['text'])) {
+          if ((item.title) && (item.text)) {
             // the content is an array of object with property text and title
             isEmpty = false;
             return false;
