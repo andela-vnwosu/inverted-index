@@ -124,9 +124,9 @@ class InvertedIndex {
       // it's an object
       if ((Object.keys(arrayObject).length > 0)) {
         // it has some contents
-        Object.keys(arrayObject).forEach((index) => {
-          const item = arrayObject[index];
-          if (item.hasOwnProperty('title') && item.hasOwnProperty('text')) {
+        Object.keys(arrayObject).forEach((key) => {
+          const item = arrayObject[key];
+          if ((item['title']) && (item['text'])) {
             // the content is an array of object with property text and title
             isEmpty = false;
             return false;
@@ -146,14 +146,13 @@ class InvertedIndex {
    */
   resolveSearchTerms(...allTerms) {
     Object.keys(allTerms).forEach((key) => {
-      const term = arguments[key];
+      const term = allTerms[key];
       if (term instanceof Object && typeof term !== 'string') {
-        let item;
-        for (item in term) {
-          if (term.hasOwnProperty(item)) {
+        Object.keys(term).forEach((item) => {
+          if ((item in term)) {
             this.resolveSearchTerms(term[item]);
           }
-        }
+        });
       } else {
         this.searchTerms.push(term);
       }
