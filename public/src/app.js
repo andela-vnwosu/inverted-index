@@ -26,11 +26,16 @@
         $timeout(() => {
           try {
             const file = angular.fromJson(reader.result);
-            if (!InvertedIndex.isEmpty(file)) {
+            if (!InvertedIndex.isEmpty(file) && $scope.fileNamesArray.indexOf(fileName) < 0) {
               $scope.filesArray.push(file);
               $scope.fileNamesArray.push(fileName);
+              sweetAlert('','file uploaded', 'success');
             } else {
-              sweetAlert('','not a valid json', 'error');
+              if ($scope.fileNamesArray.indexOf(fileName) >= 0) {
+                sweetAlert('','File already exists', 'error');
+              } else {
+                sweetAlert('','not a valid json', 'error');
+              }
             }
           
           } catch (e) {
@@ -65,7 +70,7 @@
       return arr;
     };
     $scope.createIndex = (index) => {
-      const createdIndex = invertedIndex.createIndex($scope.filesArray[index]);
+      const createdIndex = invertedIndex.createIndex($scope.fileNamesArray[index], $scope.filesArray[index]);
       // Check if the position of the index has not been saved
       if ($scope.createdIndex.indexOf(index) === -1) {
         $scope.indicesArray.push(createdIndex);
@@ -73,11 +78,11 @@
       }
     };
     $scope.searchIndex = (terms) => {
-      $scope.searchResult = invertedIndex.searchIndex(terms, 'all');
+      $scope.searchResult = invertedIndex.searchIndex('all', terms);
       $scope.currentFile = '';
     };
     $scope.searchSpecificFile = (terms, index) => {
-      $scope.searchResult = invertedIndex.searchIndex(terms, index);
+      $scope.searchResult = invertedIndex.searchIndex($scope.fileNamesArray[index], terms);
       $scope.currentFile = $scope.filesArray[index];
     };
   }]);

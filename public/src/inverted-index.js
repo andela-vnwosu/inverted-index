@@ -7,30 +7,33 @@ class InvertedIndex {
   */
   constructor() {
     // to save multiple inverted indexes
-    this.indices = [];
-    this.tempSearch = [];
+    this.indices = {};
     this.searchTerms = [];
   }
   /**
    * Create index
    * creates an inverted index from the specified fileName or JsonObject
-   * @param {Object} bookDocument the json data to build
+   * @param {Object} fileName the json data to build
+   *@param {object} fileContent the content of the json document
    * @return {Object} index that was built
    */
-  createIndex(bookDocument) {
+  createIndex(fileName, fileContent) {
     const index = {};
-    bookDocument.forEach((sentence, count) => {
-      InvertedIndex.filterText((`${sentence.title} ${sentence.text}`))
+    fileContent.forEach((sentence, count) => {
+      sentence = `${sentence.title} ${sentence.text}`;
+      InvertedIndex.filterText(sentence)
       .split(' ')
       .forEach((word) => {
-        if (index[word] && !index[word][count]) {
-          index[word].push(count);
+        if (index[word]) {
+          if (index[word][count] === undefined) {
+            index[word].push(count);
+          }
         } else {
           index[word] = [count];
         }
       });
     });
-    this.indices.push(index);
+    this.indices[fileName] = index;
     return index;
   }
   /**
@@ -46,44 +49,29 @@ class InvertedIndex {
   /**
    * Searches the recently indexed object for matches with specified parameters
    * @method searchIndex
-   * @param {String} term terms to search for
    * @param {String} selectedFile the specific index of file to search in
+   * @param {String} terms to search for
    * @return {Array} result
    */
-  searchIndex(term, selectedFile) {
-    this.tempSearch = [];
-    const result = [];
-    this.resolveSearchTerms(term);
-    term = this.searchTerms.toString().replace(',', ' ');
-    this.searchTerms = [];
-    const terms = InvertedIndex.filterText(term).split(' ');
-    if (selectedFile === undefined || selectedFile === 'all') {
-      this.indices.forEach((index, pos) => {
-        result[pos] = {};
-        terms.forEach((word) => {
-          Object.keys(index).forEach((savedWord) => {
-            if (savedWord === word) {
-              result[pos][word] = index[savedWord];
-              // save position of word occurrence in the document
-              this.tempSearch.push(index[savedWord][0]);
-            }
-          });
-        });
-      });
-    } else {
-      selectedFile = parseInt(selectedFile, 10);
-      const currentIndex = this.indices[selectedFile];
-      result[0] = {};
-      terms.forEach((word) => {
-        Object.keys(currentIndex).forEach((savedWord) => {
-          if (savedWord === word) {
-            result[0][word] = this.indices[selectedFile][savedWord];
-            this.tempSearch.push(this.indices[selectedFile][savedWord][0]);
+  searchIndex(selectedFile, ...terms) {
+    const searchSpace = selectedFile !== 'all' ? { [selectedFile]: this.indices[selectedFile] } : this.indices;
+    const searchTerms = this.resolveSearchTerms(terms)
+    .map(term => InvertedIndex.filterText(term));
+    const searchResults = {};
+
+    searchTerms.forEach((term) => {
+      Object.keys(searchSpace).forEach((fileName) => {
+        const index = this.indices[fileName];
+        if (searchResults[fileName]) {
+          if (index[term]) {
+            searchResults[fileName][term] = index[term];
           }
-        });
+        } else if (index[term]) {
+          searchResults[fileName] = { [term]: index[term] };
+        }
       });
-    }
-    return result;
+    });
+    return searchResults;
   }
 
   /**
@@ -140,22 +128,41 @@ class InvertedIndex {
   /**
    * Resolves complex search terms into linear array and saves
    * to the searchTerm property
-   *
    * @method resolveSearchTerms
-   * @return {undefined}
+   * @return {array} the resolved terms
    */
   resolveSearchTerms(...allTerms) {
-    Object.keys(allTerms).forEach((key) => {
-      const term = allTerms[key];
-      if (term instanceof Object && typeof term !== 'string') {
-        Object.keys(term).forEach((item) => {
-          if ((item in term)) {
-            this.resolveSearchTerms(term[item]);
-          }
-        });
-      } else {
-        this.searchTerms.push(term);
-      }
+    this.searchTerms = [];
+    this.resolveSearchTermsHelper(allTerms);
+    return this.searchTerms;
+  }
+
+  /**
+   * Helper method to resolve array of search terms
+   * @method resolveSearchTermsHelper
+   * @param {Array} allTerms the terms
+   * @return {undefined} returns nothing
+   */
+  resolveSearchTermsHelper(allTerms) {
+    allTerms.forEach((term) => {
+      this.testTerm(term);
     });
+  }
+
+  /**
+   * process string search terms
+   * @method testTerm
+   * @param {String} term
+   * @return {Array} the search terms in an array
+   */
+  testTerm(term) {
+    if (typeof term === 'string') {
+      term = term.trim().split(' ');
+      if (term.length === 1) {
+        return this.searchTerms.push(term[0]);
+      }
+      return this.resolveSearchTermsHelper(term);
+    }
+    return this.resolveSearchTermsHelper(term);
   }
 }
