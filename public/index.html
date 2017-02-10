@@ -44,13 +44,17 @@
 
                             </div>
 
-                            <div >
-                                <div ng-repeat="fileName in fileNamesArray track by $index" style="height: 40px">
-                                    <span >{{fileName}}</span>
-                                    <button class="btn btn-default pull-right" ng-click="createIndex($index)">Create Index</button>
-
-                                </div>
+                            <div class="dropdown" id="choice-dropdown" style="margin-top: .35em" >
+                                <button class="upload-button dropdown-toggle" type="button" data-toggle="dropdown">Create Index
+                                    <span class="caret"></span></button>
+                                <ul class="dropdown-menu">
+                                    <li ng-repeat="fileName in fileNamesArray track by $index">
+                                        <a ng-click="createIndex($index)">{{fileName}}</a>
+                                    </li>
+                                </ul>
                             </div>
+                            <hr>
+
                             <div class="row" style="max-height: 400px !important; overflow: auto">
                                 <div class="col-md-12" ng-repeat="wordindex in indicesArray track by $index">
                                     <table class="table">
@@ -105,7 +109,8 @@
                         <h4>Search result</h4>
                         <div class="row" style="max-height: 400px !important; overflow: scroll">
 
-                            <div class="col-md-12" ng-repeat="wordindex in searchResult track by $index">
+                            <div class="col-md-12" ng-repeat="(key, wordindex) in searchResult track by $index">
+                                <span>{{key}}</span>
                                 <table class="table">
                                     <thead>
                                     <tr>
