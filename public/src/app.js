@@ -29,17 +29,14 @@
             if (!InvertedIndex.isEmpty(file) && $scope.fileNamesArray.indexOf(fileName) < 0) {
               $scope.filesArray.push(file);
               $scope.fileNamesArray.push(fileName);
-              sweetAlert('','file uploaded', 'success');
+              sweetAlert('', 'file uploaded', 'success');
+            } else if ($scope.fileNamesArray.indexOf(fileName) >= 0) {
+              sweetAlert('', 'File already exists', 'error');
             } else {
-              if ($scope.fileNamesArray.indexOf(fileName) >= 0) {
-                sweetAlert('','File already exists', 'error');
-              } else {
-                sweetAlert('','not a valid json', 'error');
-              }
+              sweetAlert('', 'not a valid json', 'error');
             }
-          
           } catch (e) {
-            sweetAlert('','not a valid json', 'error');
+            sweetAlert('', 'not a valid json', 'error');
           }
         });
       });
@@ -58,8 +55,6 @@
         return;
       }
       const arr = [];
-
-     
       // iterates over index of filesArray and populates filesArray
       const length = (typeof alt !== 'undefined' && $scope.currentFile !== '') ? $scope.currentFile.length :
         $scope.filesArray[index].length;
@@ -70,7 +65,8 @@
       return arr;
     };
     $scope.createIndex = (index) => {
-      const createdIndex = invertedIndex.createIndex($scope.fileNamesArray[index], $scope.filesArray[index]);
+      const createdIndex = invertedIndex.createIndex($scope.fileNamesArray[index],
+        $scope.filesArray[index]);
       // Check if the position of the index has not been saved
       if ($scope.createdIndex.indexOf(index) === -1) {
         $scope.indicesArray.push(createdIndex);
