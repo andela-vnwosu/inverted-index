@@ -3,8 +3,22 @@
  */
 (() => {
   const app = angular.module('invertedIndex', ['ngFileUpload']);
+  
+  app.filter('truncate', ()=>{
+    return (input, length)=>{
+        length = length || 12;
+        if(input.charAt(length) === " "){
+          return input.substr(0,length);
+        } else {
+          let nextSpace = input.indexOf(" ", length);
+          return nextSpace === -1 ? input : input.substr(0,nextSpace) + ' ...';
+        }
+    };
+    
+  })
 
-  app.controller('InvertedIndexController', ['$scope', '$timeout', ($scope, $timeout) => {
+  app.controller('InvertedIndexController',
+    ['$scope', '$timeout', ($scope, $timeout) => {
     const invertedIndex = new InvertedIndex();
     $scope.message = 'this is a message';
     $scope.filesArray = [];
@@ -14,6 +28,7 @@
     $scope.searchResult = [];
     $scope.createdIndex = [];
     $scope.currentFile = '';
+    $scope.titlesIndex = [];
 
     /**
      * @function readJson
@@ -21,12 +36,13 @@
      * @param {String} fileName
      * @return {undefined} returns nothing
      */
-    function readJson(reader, fileName) {
+    function readJson(reader, fileName, cb) {
       reader.addEventListener('load', () => {
         $timeout(() => {
           try {
             const file = angular.fromJson(reader.result);
-            if (!InvertedIndex.isEmpty(file) && $scope.fileNamesArray.indexOf(fileName) < 0) {
+            if (!InvertedIndex.isEmpty(file) && $scope.fileNamesArray
+                .indexOf(fileName) < 0) {
               $scope.filesArray.push(file);
               $scope.fileNamesArray.push(fileName);
               sweetAlert('', 'file uploaded', 'success');
@@ -38,39 +54,55 @@
           } catch (e) {
             sweetAlert('', 'not a valid json', 'error');
           }
+          cb();
         });
       });
     }
 
     $scope.uploadFile = (files) => {
-      for (let i = 0; i < files.length; i += 1) {
-        const reader = new FileReader();
-        readJson(reader, files[i].name);
-        reader.readAsText(files[i]);
-      }
+      (function uploadSync(index) {
+        if(index >= files.length) {
+          return;
+        } else {
+          const reader = new FileReader();
+          reader.readAsText(files[index]);
+          return readJson(reader, files[index].name, () => {
+            uploadSync(++index);
+          });
+        }
+      }(0));
+      
     };
 
     $scope.getLengthAsArray = (index, alt) => {
       if (index < 0 || typeof $scope.filesArray[index] === 'undefined') {
         return;
       }
+      const fileName = alt || $scope.fileNamesArray[$scope.createdIndex[index]];
+      const fileIndex = $scope.fileNamesArray.indexOf(fileName);
       const arr = [];
-      // iterates over index of filesArray and populates filesArray
-      const length = (typeof alt !== 'undefined' && $scope.currentFile !== '') ? $scope.currentFile.length :
-        $scope.filesArray[index].length;
-
+      const length = $scope.filesArray[fileIndex].length;
       for (let i = 0; i < length; i += 1) {
         arr.push(i);
       }
       return arr;
     };
+    
+    $scope.getTitle = (counter, index) => {
+      const fileName = $scope.fileNamesArray[$scope.createdIndex[index]];
+      const fileIndex = $scope.fileNamesArray.indexOf(fileName);
+      const title = $scope.filesArray[fileIndex][counter].title;
+      return title;
+    }
     $scope.createIndex = (index) => {
-      const createdIndex = invertedIndex.createIndex($scope.fileNamesArray[index],
-        $scope.filesArray[index]);
+      $scope.titlesIndex.push(index);
+      invertedIndex.createIndex($scope.fileNamesArray[index], $scope.filesArray[index]);
+      const createdIndex = invertedIndex.getIndex($scope.fileNamesArray[index]);
+      
       // Check if the position of the index has not been saved
       if ($scope.createdIndex.indexOf(index) === -1) {
         $scope.indicesArray.push(createdIndex);
-        $scope.createdIndex.push(index); // if it has been created, save index position
+        $scope.createdIndex.push(index);
       }
     };
     $scope.searchIndex = (terms) => {

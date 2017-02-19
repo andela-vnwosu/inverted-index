@@ -61,7 +61,10 @@
                                         <thead>
                                         <tr>
                                             <th>Term</th>
-                                            <th ng-repeat="counter in getLengthAsArray($index) track by $index">&nbsp;&nbsp;Doc {{ $index}} &nbsp;&nbsp; </th>
+                                                {{ fileNamesArray[createdIndex[$index]] }}
+                                            <th ng-repeat="counter in getLengthAsArray($index)">
+                                                {{ getTitle(counter, $parent.$index) | truncate }}
+                                            </th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -109,13 +112,16 @@
                         <h4>Search result</h4>
                         <div class="row" style="max-height: 400px !important; overflow: scroll">
 
-                            <div class="col-md-12" ng-repeat="(key, wordindex) in searchResult track by $index">
+                            <div class="col-md-12" ng-repeat="(key, wordindex) in searchResult">
+                                <span ng-init="outerIndex = $index"></span>
                                 <span>{{key}}</span>
                                 <table class="table">
                                     <thead>
                                     <tr>
                                         <th>Term</th>
-                                        <th ng-repeat="counter in getLengthAsArray($index, 0) track by $index">&nbsp;&nbsp;Doc {{ $index}} &nbsp;&nbsp; </th>
+                                        <th ng-repeat="counter in getLengthAsArray($index, key)">
+                                            {{ getTitle(counter, $parent.$index) | truncate }}
+                                        </th>
                                     </tr>
                                     </thead>
                                     <tbody>

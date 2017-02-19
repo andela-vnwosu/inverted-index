@@ -8,6 +8,7 @@ class InvertedIndex {
   constructor() {
     // to save multiple inverted indexes
     this.indices = {};
+    this.docTitles = {};
     this.searchTerms = [];
   }
   /**
@@ -19,22 +20,23 @@ class InvertedIndex {
    */
   createIndex(fileName, fileContent) {
     const index = {};
-    fileContent.forEach((sentence, count) => {
-      sentence = `${sentence.title} ${sentence.text}`;
-      InvertedIndex.filterText(sentence)
+    let docTitle = '';
+    fileContent.forEach((doc, docId) => {
+      doc = doc.text;
+      docTitle = doc.title;
+      InvertedIndex.filterText(doc)
       .split(' ')
       .forEach((word) => {
         if (index[word]) {
-          if (index[word][count] === undefined) {
-            index[word].push(count);
+          if (!index[word][docId]) {
+            index[word].push(docId);
           }
         } else {
-          index[word] = [count];
+          index[word] = [docId];
         }
       });
     });
     this.indices[fileName] = index;
-    return index;
   }
   /**
    * @method filterText
@@ -54,7 +56,8 @@ class InvertedIndex {
    * @return {Array} result
    */
   searchIndex(selectedFile, ...terms) {
-    const searchSpace = selectedFile !== 'all' ? { [selectedFile]: this.indices[selectedFile] } : this.indices;
+    const searchSpace = selectedFile === 'all' ?
+      this.indices : { [selectedFile]: this.indices[selectedFile] };
     const searchTerms = this.resolveSearchTerms(terms)
     .map(term => InvertedIndex.filterText(term));
     const searchResults = {};
@@ -76,14 +79,11 @@ class InvertedIndex {
 
   /**
    * @method getIndex
-   * @param {Number} pos position in array
+   * @param {object} fileName position in array
    * @return {Object} the index
    */
-  getIndex(pos) {
-    if (!pos) {
-      return this.index[0];
-    }
-    return this.index[pos];
+  getIndex(fileName) {
+    return this.indices[fileName];
   }
   /**
    * isValidJson checks if json is valid
