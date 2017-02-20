@@ -3,15 +3,13 @@
  */
 (() => {
   const app = angular.module('invertedIndex', ['ngFileUpload']);
-  app.filter('truncate', () => {
-    return (input, length) => {
-      length = length || 12;
-      if (input.charAt(length) === ' ') {
-        return input.substr(0, length);
-      }
-      const nextSpace = input.indexOf(' ', length);
-      return nextSpace === -1 ? input : input.substr(0, nextSpace) + ' ...';
-    };
+  app.filter('truncate', () => (input, length) => {
+    length = length || 12;
+    if (input.charAt(length) === ' ') {
+      return input.substr(0, length);
+    }
+    const nextSpace = input.indexOf(' ', length);
+    return nextSpace === -1 ? input : `${input.substr(0, nextSpace)} ...`;
   });
 
   app.controller('InvertedIndexController',
@@ -59,13 +57,12 @@
 
       $scope.uploadFile = (files) => {
         (function uploadSync(index) {
-          if (index >= files.length) {
-            return;
-          } else {
+          if (index < files.length) {
             const reader = new FileReader();
             reader.readAsText(files[index]);
             return readJson(reader, files[index].name, () => {
-              uploadSync(++index);
+              index += 1;
+              uploadSync(index);
             });
           }
         }(0));
