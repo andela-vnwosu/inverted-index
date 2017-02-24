@@ -40,6 +40,6 @@
     "gulp-rename": "^1.2.2"
   },
   "devDependencies": {
-
+    "eslint": "^3.15.0"
   }
 }
