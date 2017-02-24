@@ -14,8 +14,8 @@ const invalidBook = require('../invalidBook.json');
         expect(InvertedIndex.isValidJson(emptyBook)).toBe(false);
       });
 
-      it('should assert that the JSON object is not empty,' +
-        'and contains title and text properties', () => {
+      it(`should assert that the JSON object is not empty
+        and contains title and text properties`, () => {
         expect(InvertedIndex.isEmpty(invalidBook)).toBe(true);
       });
 

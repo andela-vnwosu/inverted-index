@@ -145,7 +145,7 @@ class InvertedIndex {
    */
   resolveSearchTermsHelper(allTerms) {
     allTerms.forEach((term) => {
-      this.testTerm(term);
+      this.checkTerm(term);
     });
   }
 
@@ -155,7 +155,7 @@ class InvertedIndex {
    * @param {String} term
    * @return {Array} the search terms in an array
    */
-  testTerm(term) {
+  checkTerm(term) {
     if (typeof term === 'string') {
       term = term.trim().split(' ');
       if (term.length === 1) {
